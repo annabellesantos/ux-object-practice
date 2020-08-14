@@ -250,68 +250,22 @@ function cloneRose(plant) {
   // Given a plant, clone it and return the new plant
   // Hint: You do this in the Reading!  copyObject...
 
-  changeColorOfPlant(clone);
   return clone;
 }
 
 /**
- * cloneAllTheRosesAndChangeTheirColors
+ * cloneAllTheRoses
  * @param {Object} estate - An estate object
  *
- * This should attempt to clone every rose and add the plant to the garden.
- * Just watch out for flawed plants!  Don't attempt to clone flawed plants.
- * Otherwise you will produce flowerless roses.
+ * This should clone every rose and add the new plant to the garden.
  */
-function cloneAllTheRosesAndChangeTheirColors(estate) {
+function cloneAllTheRoses(estate) {
   // Your Code Here!
   // for each rose...
   // Hint: Watch out for modifying an array you are currently looping through!  How can you avoid that?
   // Instead of putting the new plants immediately into the rose arbor, maybe store them in a new array
   // until you have finished iterating.  Then you can add them in after your loop finishes.
 }
-
-//
-// DO NOT CHANGE ANYTHING IN THIS
-/**
- * changeColorOfPlant
- * @param {Object} plant
- * The Owner's proprietary color changing algorithm.
- * Given a plant, this genetically changes the color.
- *
- * However!  Due to a flaw in the color changing process, there is a chance that a rose will become flawed
- * after changing the color.
- * If you attempt to modify a flawed flower, it will produce a flowerless
- * plant.
- */
-function changeColorOfPlant(plant) {
-  let newColors = [
-    "Amber",
-    "Crimson",
-    "Aqua",
-    "Cerulean Blue",
-    "Flamingo",
-    "Gun Smoke",
-    "Jade",
-    "Merigold",
-    "Mustard",
-    "Periwinkle",
-  ];
-  // ~~ Magic Genetic Engineering ~~
-  let randIndex = Math.floor(Math.random() * newColors.length);
-
-  if (plant.isFlawed) {
-    plant.flowerDescription = "wilted sad buds with no pedals.";
-    plant.flowerColor = null;
-  } else {
-    plant.flowerColor = newColors[randIndex];
-  }
-
-  let randomChance = Math.floor(Math.random() * 3);
-  if (randomChance < 1) {
-    plant.isFlawed = true;
-  }
-}
-// DO NOT CHANGE ANYTHING IN THIS
 
 /* 
    -------TESTS---------------------------------------------------------------
@@ -451,33 +405,18 @@ function changeColorOfPlant(plant) {
         rose5Copy.isPerennial === rose5.isPerennial &&
         rose5Copy.leafDescription === rose5.leafDescription &&
         rose5Copy.leafColor === rose5.leafColor &&
-        rose5Copy.flowerColor !== rose5.flowerColor &&
+        rose5Copy.flowerColor === rose5.flowerColor &&
+        rose5Copy.flowerDescription === rose5.flowerDescription &&
         rose5Copy.gallonsWaterPerWeek === rose5.gallonsWaterPerWeek &&
         rose5Copy.amountOfSunNeeded === rose5.amountOfSunNeeded
     );
 
     console.log("* Clone All Roses - First Run");
     let initialNumRoses = estate5.roseArbor.length;
-    cloneAllTheRosesAndChangeTheirColors(estate5);
+    cloneAllTheRoses(estate5);
     console.log(
       estate5.roseArbor.length > 0 &&
         estate5.roseArbor.length === initialNumRoses * 2
-    );
-
-    console.log("* Clone All Roses - After a few runs... - No flawed roses.");
-    cloneAllTheRosesAndChangeTheirColors(estate5);
-    cloneAllTheRosesAndChangeTheirColors(estate5);
-    cloneAllTheRosesAndChangeTheirColors(estate5);
-    let hasNoRuinedRoses = true;
-    for (let rose of estate5.roseArbor) {
-      if (rose.flowerColor == null) {
-        hasNoRuinedRoses = false;
-      }
-    }
-    console.log(
-      estate5.roseArbor.length > 0 &&
-        estate5.roseArbor.length > initialNumRoses &&
-        hasNoRuinedRoses
     );
   }
 
