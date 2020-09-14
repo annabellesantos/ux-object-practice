@@ -59,7 +59,16 @@ function createPlant(
   gallonsWaterPerWeek,
   amountOfSunNeeded
 ) {
-  let plant = {};
+  let plant = {
+    type: type,
+    isPerennial: isPerennial,
+    leafDescription: leafDescription,
+    leafColor: leafColor,
+    flowerColor: flowerColor,
+    flowerDescription: flowerDescription,
+    gallonsWaterPerWeek: gallonsWaterPerWeek,
+    amountOfSunNeeded: amountOfSunNeeded,
+  };
   // Your Code Here!
   // Create a plant object, populate it with all of the values from the arguments, and return it.
   // Hint: You can name every key in your object the same as the variable from the argument to this function.
@@ -112,6 +121,14 @@ function addPlantToEstate(estate, plant) {
         add it to the Perennial Garden
     else add it to the Slope Planters
     */
+  // console.log(plant);
+  if (plant.type === "rose") {
+    estate.roseArbor.push(plant);
+  } else if (plant.isPerennial && plant.amountOfSunNeeded <= 5) {
+    estate.perennialGarden.push(plant);
+  } else {
+    estate.slopePlanters.push(plant);
+  }
 }
 
 /* ------------------------------------------------
@@ -151,9 +168,10 @@ function addPlantToEstate(estate, plant) {
  * Example: "A Rose which has green leaves that are rounded with a point.  The flowers are red concentric circles of pedals. "
  */
 function describePlant(plant) {
-  let description = "";
+  let description = `A ${plant.type} with leaves that are ${plant.leafDescription} and ${plant.flowerColor}-colored flowers that have ${plant.flowerDescription}. `;
   // Your Code Here!
   // Return a string describing all the visual features of the given plant
+
   return description;
 }
 
@@ -165,7 +183,11 @@ function describePlant(plant) {
  * // Example: "The Rose Garden has 10 types of plants in it.  It contains: A"
  */
 function describeGarden(gardenName, listOfPlants) {
-  let description = "";
+  let description = `The ${gardenName} has ${listOfPlants.length} plants. It contains: `;
+  for (plantIndex = 0; plantIndex < listOfPlants.length; plantIndex++) {
+    // referenced https://www.w3schools.com/js/js_loop_for.asp
+    description += describePlant(listOfPlants[plantIndex]);
+  }
   // Your Code Here!
   // Given a list of plants, describe every plant in the list.
   // return a string which is the description.
@@ -182,6 +204,10 @@ function describeGarden(gardenName, listOfPlants) {
  */
 function describeEstate(estate) {
   let description = "";
+  // referenced for...in https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in
+  for (const garden in estate) {
+    description += describeGarden(garden, estate[garden]);
+  }
   // Your Code Here!
   // Return a string describing all the different visual features of all the gardens in the estate.
   // Feel free to make up various details.
@@ -210,6 +236,12 @@ function describeEstate(estate) {
  */
 function calculateWaterUsagePerWeek(estate) {
   let numGallons = 0;
+  // console.log(estate);
+  for (const garden in estate) {
+    for (const plant of estate[garden]) {
+      numGallons += plant.gallonsWaterPerWeek;
+    }
+  }
   // Your Code Here!
 
   return numGallons;
@@ -246,6 +278,12 @@ function calculateWaterUsagePerWeek(estate) {
  */
 function cloneRose(plant) {
   let clone = {};
+  for (let property in plant) {
+    clone = {
+      ...plant,
+    };
+  }
+  // console.log(clone);
   // Your Code Here!
   // Given a plant, clone it and return the new plant
   // Hint: You do this in the Reading!  copyObject...
@@ -260,6 +298,20 @@ function cloneRose(plant) {
  * This should clone every rose and add the new plant to the garden.
  */
 function cloneAllTheRoses(estate) {
+  cloneContainer = [];
+  for (let rose in estate["roseArbor"]) {
+    //console.log(estate["roseArbor"][rose]);
+    cloneContainer.push(cloneRose(estate["roseArbor"][rose]));
+  }
+
+  // Option 1: using a for loop to push the clones individually
+  // for (let clone in cloneContainer) {
+  //   estate["roseArbor"].push(clone);
+  // }
+
+  // Option 2: using concat
+  estate["roseArbor"] = estate["roseArbor"].concat(cloneContainer);
+  //console.log(estate.roseArbor);
   // Your Code Here!
   // for each rose...
   // Hint: Watch out for modifying an array you are currently looping through!  How can you avoid that?
